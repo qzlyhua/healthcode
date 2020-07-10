@@ -1,5 +1,6 @@
 package cn.xcewell.adapter.healthcode.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.XmlUtil;
 import cn.hutool.crypto.digest.MD5;
 import cn.xcewell.adapter.healthcode.dto.Data;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author yanghua
@@ -37,11 +39,17 @@ public class HealthCodeServiceImpl implements HealthCodeService {
 	log.info("请求入参 method：{}", "QueryHealthCode");
 	log.info("请求入参 data：{}", data);
 	Object invRes = WsClient.invoke(url, "Invoke", appId, pwd, "QueryHealthCode", data);
-	String res  = (String) invRes;
-	log.info("请求结果：{}", res);
-//	XmlUtil.createXml(res);
-//	XmlUtil.format(XmlUtil.createXml(res));
-	return null;
+	Map<String, Object> invResMap = BeanUtil.beanToMap(invRes);
+	String resCode = (String) BeanUtil.beanToMap(invResMap.get("code")).get("value");
+	String resData = (String) BeanUtil.beanToMap(invResMap.get("data")).get("value");
+	String resMessage = (String) BeanUtil.beanToMap(invResMap.get("message")).get("value");
+	log.info("请求出参，code：{}；data：{}，message：{}", resCode, resData, resMessage);
+
+	Map<String, Object> res = XmlUtil.xmlToMap(resData);
+	HealthCodeResponse healthCodeResponse = new HealthCodeResponse();
+	healthCodeResponse.setStatus(res.get("CodeStatus").toString());
+	healthCodeResponse.setReason(res.get("StatusReason").toString());
+	return healthCodeResponse;
     }
 
     private String getPwd(String appId, String method) {
