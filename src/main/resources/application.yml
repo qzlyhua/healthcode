@@ -1,0 +1,5 @@
+server:
+  port: 8765
+webservice:
+  address: http://10.1.1.91:9038/ServiceXGMC.svc?singleWsdl
+  appid: 312000
