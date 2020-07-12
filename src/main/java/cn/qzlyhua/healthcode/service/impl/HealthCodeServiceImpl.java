@@ -41,16 +41,17 @@ public class HealthCodeServiceImpl implements HealthCodeService {
 	log.info("请求入参 method：{}", "QueryHealthCode");
 	log.info("请求入参 data：{}", data);
 	Object invRes = WsClient.invoke(url, "Invoke", appId, pwd, "QueryHealthCode", data);
-
-	String resCode = (String) BeanUtil.getFieldValue(invRes, "code");
-	String resMessage = (String) BeanUtil.getFieldValue(invRes, "message");
+	Map<String, Object> invResMap = BeanUtil.beanToMap(invRes);
+	String resCode = BeanUtil.beanToMap(invResMap.get("code")).get("value").toString();
+	String resData = BeanUtil.beanToMap(invResMap.get("data")).get("value").toString();
+	String resMessage = BeanUtil.beanToMap(invResMap.get("message")).get("value").toString();
+	log.info("请求出参，code：{}；data：{}，message：{}", resCode, resData, resMessage);
 
 	HealthCodeResponse healthCodeResponse = new HealthCodeResponse();
 	healthCodeResponse.setCode(resCode);
 	healthCodeResponse.setMessage(resMessage);
 
 	if(KEY_SUCCESS.equalsIgnoreCase(resCode)) {
-	    String resData = (String) BeanUtil.getFieldValue(invRes, "data");
 	    Map<String, Object> res = XmlUtil.xmlToMap(resData);
 	    healthCodeResponse.setStatus(res.get("CodeStatus").toString());
 	    healthCodeResponse.setReason(res.get("StatusReason").toString());
