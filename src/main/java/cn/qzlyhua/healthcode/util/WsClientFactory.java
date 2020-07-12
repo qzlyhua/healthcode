@@ -1,4 +1,4 @@
-package cn.xcewell.adapter.healthcode.util;
+package cn.qzlyhua.healthcode.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.cxf.endpoint.Client;
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * webservice客户端工厂类
  *
- * @author qzlyhua
+ * @author yanghua
  */
 @Component
 @Slf4j

@@ -1,4 +1,4 @@
-package cn.xcewell.adapter.healthcode;
+package cn.qzlyhua.healthcode;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

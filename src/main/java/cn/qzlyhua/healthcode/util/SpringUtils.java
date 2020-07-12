@@ -1,4 +1,4 @@
-package cn.xcewell.adapter.healthcode.util;
+package cn.qzlyhua.healthcode.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Yang
+ * @author yanghua
  * @Description spring获取bean工具类
  * @date 2018-08-21
  */

@@ -1,6 +1,5 @@
-package cn.xcewell.adapter.healthcode.util;
+package cn.qzlyhua.healthcode.util;
 
-import com.xcewell.common.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.endpoint.Endpoint;
@@ -12,7 +11,7 @@ import javax.xml.namespace.QName;
 /**
  * web service 客户端
  *
- * @author qzlyhua
+ * @author yanghua
  */
 @Slf4j
 public class WsClient {

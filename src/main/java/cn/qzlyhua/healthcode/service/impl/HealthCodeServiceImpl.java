@@ -1,12 +1,12 @@
-package cn.xcewell.adapter.healthcode.service.impl;
+package cn.qzlyhua.healthcode.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.XmlUtil;
 import cn.hutool.crypto.digest.MD5;
-import cn.xcewell.adapter.healthcode.dto.Data;
-import cn.xcewell.adapter.healthcode.service.HealthCodeService;
-import cn.xcewell.adapter.healthcode.util.WsClient;
-import cn.xcewell.adapter.healthcode.vo.HealthCodeResponse;
+import cn.qzlyhua.healthcode.dto.Data;
+import cn.qzlyhua.healthcode.service.HealthCodeService;
+import cn.qzlyhua.healthcode.util.WsClient;
+import cn.qzlyhua.healthcode.vo.HealthCodeResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,8 @@ public class HealthCodeServiceImpl implements HealthCodeService {
     @Value("${webservice.appid}")
     private String appId;
 
+    private static final String KEY_SUCCESS = "200";
+
     @Override
     public HealthCodeResponse queryHealthCode(String idCard) {
 	Data queryHealthCodeReq = new Data();
@@ -39,19 +41,31 @@ public class HealthCodeServiceImpl implements HealthCodeService {
 	log.info("请求入参 method：{}", "QueryHealthCode");
 	log.info("请求入参 data：{}", data);
 	Object invRes = WsClient.invoke(url, "Invoke", appId, pwd, "QueryHealthCode", data);
-	Map<String, Object> invResMap = BeanUtil.beanToMap(invRes);
-	String resCode = (String) BeanUtil.beanToMap(invResMap.get("code")).get("value");
-	String resData = (String) BeanUtil.beanToMap(invResMap.get("data")).get("value");
-	String resMessage = (String) BeanUtil.beanToMap(invResMap.get("message")).get("value");
-	log.info("请求出参，code：{}；data：{}，message：{}", resCode, resData, resMessage);
 
-	Map<String, Object> res = XmlUtil.xmlToMap(resData);
+	String resCode = (String) BeanUtil.getFieldValue(invRes, "code");
+	String resMessage = (String) BeanUtil.getFieldValue(invRes, "message");
+
 	HealthCodeResponse healthCodeResponse = new HealthCodeResponse();
-	healthCodeResponse.setStatus(res.get("CodeStatus").toString());
-	healthCodeResponse.setReason(res.get("StatusReason").toString());
+	healthCodeResponse.setCode(resCode);
+	healthCodeResponse.setMessage(resMessage);
+
+	if(KEY_SUCCESS.equalsIgnoreCase(resCode)) {
+	    String resData = (String) BeanUtil.getFieldValue(invRes, "data");
+	    Map<String, Object> res = XmlUtil.xmlToMap(resData);
+	    healthCodeResponse.setStatus(res.get("CodeStatus").toString());
+	    healthCodeResponse.setReason(res.get("StatusReason").toString());
+	}
+
+	log.info("处理完成：{}", healthCodeResponse);
 	return healthCodeResponse;
     }
 
+    /**
+     * 密钥生成方法：md5(appId+method+date)
+     * @param appId
+     * @param method
+     * @return
+     */
     private String getPwd(String appId, String method) {
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 	String date = sdf.format(new Date());

@@ -1,4 +1,4 @@
-package cn.xcewell.adapter.healthcode.vo;
+package cn.qzlyhua.healthcode.vo;
 
 import lombok.Data;
 
@@ -9,6 +9,6 @@ import lombok.Data;
 public class HealthCodeResponse {
     private String status;
     private String reason;
-    // 密接
-    private String data;
+    private String code;
+    private String message;
 }

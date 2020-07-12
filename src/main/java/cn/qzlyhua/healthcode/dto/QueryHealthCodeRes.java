@@ -1,4 +1,4 @@
-package cn.xcewell.adapter.healthcode.dto;
+package cn.qzlyhua.healthcode.dto;
 
 import lombok.Data;
 
