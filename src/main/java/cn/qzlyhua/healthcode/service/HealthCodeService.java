@@ -8,6 +8,7 @@ import cn.qzlyhua.healthcode.vo.HealthCodeResponse;
 public interface HealthCodeService {
     /**
      * 调用webservice接口：QueryHealthCode
+     *
      * @param idCard
      * @return
      */
