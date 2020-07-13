@@ -31,7 +31,10 @@ public class HealthCodeController {
     private Response getHealthCodeStatus(@RequestBody HealthCodeParam param) {
         Assert.hasText(param.getIDNO(), "请输入身份证号码");
         HealthCodeResponse response = healthCodeService.queryHealthCode(param.getIDNO());
-        return new Response(200, response.getMessage(),
-                Dict.create().set("status", response.getStatus()).set("reason", response.getReason()));
+        return new Response(200, response.getMessage(), Dict.create()
+                .set("status", response.getStatus())
+                .set("reason", response.getReason())
+                .set("name", response.getName())
+        );
     }
 }

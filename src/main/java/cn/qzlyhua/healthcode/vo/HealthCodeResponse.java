@@ -9,6 +9,7 @@ import lombok.Data;
 public class HealthCodeResponse {
     private String status;
     private String reason;
+    private String name;
     private String code;
     private String message;
 }

@@ -54,6 +54,7 @@ public class HealthCodeServiceImpl implements HealthCodeService {
             Map<String, Object> res = XmlUtil.xmlToMap(resData);
             healthCodeResponse.setStatus(res.get("CodeStatus").toString());
             healthCodeResponse.setReason(res.get("StatusReason").toString());
+            healthCodeResponse.setName(res.get("Name").toString());
             healthCodeResponse.setMessage("调用成功");
         } else {
             String resMessage = BeanUtil.beanToMap(invResMap.get("message")).get("value").toString();
